@@ -1,0 +1,17 @@
+# Tested direct dependencies on Python 3.13. Regenerate model artifacts after upgrades.
+fastapi==0.117.1
+uvicorn==0.37.0
+pandas==2.3.3
+numpy==2.4.3
+scikit-learn==1.8.0
+joblib==1.5.3
+openpyxl==3.1.5
+pydantic==2.13.5
+matplotlib==3.11.0
+reportlab==4.4.10
+requests==2.33.0
+pytest==9.1.1
+httpx==0.28.1
+pyarrow==23.0.1
+threadpoolctl==3.6.0
+pymupdf==1.28.0

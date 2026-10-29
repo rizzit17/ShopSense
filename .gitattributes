@@ -1,0 +1,6 @@
+# Preserve generated datasets, fitted models and academic deliverables exactly.
+*.pdf binary
+*.xlsx binary
+*.parquet binary
+*.joblib binary
+*.png binary

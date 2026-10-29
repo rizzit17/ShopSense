@@ -1,0 +1,10 @@
+frontend/node_modules
+frontend/dist
+.git
+tmp
+data/raw
+data/processed/cleaned_transactions.parquet
+data/processed/rfm_raw.csv
+reports
+.pytest_cache
+**/__pycache__

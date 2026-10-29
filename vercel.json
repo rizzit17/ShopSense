@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "buildCommand": "cd frontend && npm run build",
+  "outputDirectory": "frontend/dist",
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "{backend/**,ml/artifacts/**,data/processed/preprocessing_audit.json}",
+      "maxDuration": 60,
+      "excludeFiles": "{.venv/**,frontend/node_modules/**,frontend/src/**,tmp/**}"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "framework": null,
+  "installCommand": "cd frontend && npm ci"
+}

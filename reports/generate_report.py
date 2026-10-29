@@ -1,0 +1,117 @@
+"""Build the seven-page academic report from computed artifacts, from any cwd."""
+import json
+from pathlib import Path
+from html import escape
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, PageBreak
+from PIL import Image as PILImage
+ROOT = Path(__file__).resolve().parents[1]
+OUTPUT = ROOT/'reports/ShopSense_AI_Case_Study.pdf'
+def read(name): return json.loads((ROOT/name).read_text(encoding='utf-8-sig'))
+def create_report():
+    a=read('data/processed/preprocessing_audit.json'); m=read('ml/artifacts/evaluation_metrics.json')
+    profiles=read('ml/artifacts/cluster_profiles.json'); exp=read('ml/artifacts/experiment_comparison.json')
+    student=read('reports/student.json')
+    styles=getSampleStyleSheet()
+    for name,font,size,leading in [('Body','Helvetica',10,15),('Small','Helvetica',8,11),('Section','Helvetica-Bold',17,22),('Sub','Helvetica-Bold',11,15),('TitleCustom','Times-Roman',29,33)]:
+        styles.add(ParagraphStyle(name,fontName=font,fontSize=size,leading=leading,spaceAfter=10,textColor=colors.HexColor('#252925')))
+    story=[]
+    def p(text,style='Body'): story.append(Paragraph(text,styles[style]))
+    def head(text): p(text,'Sub')
+    def section(text): p(text,'Section')
+    def page(): story.append(PageBreak())
+    def table(rows,widths):
+        t=Table([[Paragraph(escape(str(c)),styles['Small']) for c in row] for row in rows],colWidths=widths,repeatRows=1,hAlign='LEFT')
+        t.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,0),colors.HexColor('#e8eee6')),('VALIGN',(0,0),(-1,-1),'TOP'),('LINEBELOW',(0,0),(-1,0),.8,colors.HexColor('#607866')),('LINEBELOW',(0,1),(-1,-1),.3,colors.HexColor('#deddd5')),('TOPPADDING',(0,0),(-1,-1),6),('BOTTOMPADDING',(0,0),(-1,-1),4)]))
+        story.extend([t,Spacer(1,12)])
+    def figure(name,caption,width=435):
+        path=ROOT/'reports/figures'/name
+        with PILImage.open(path) as im: w,h=im.size
+        story.append(Image(str(path),width=width,height=width*h/w));p(caption,'Small')
+    p('SHOPSENSE','TitleCustom'); p('Discovering Different Shopping Personalities Using Machine Learning','Sub')
+    p('Artificial Intelligence academic case study | VIT Vellore','Small')
+    table([['Submission details','Editable values (reports/student.json)'],*[[k.replace('_',' ').title(),v] for k,v in student.items()]],[145,330])
+    section('1. Introduction')
+    p('Retail transaction logs describe items and invoices, while many business questions concern customers: who purchased recently, who orders repeatedly, and whose recorded spending is high? Customer segmentation groups people with similar observed purchasing behavior. It supports exploration and the design of hypotheses for future engagement studies.')
+    p('ShopSense is an end-to-end study of unsupervised customer segmentation. It transforms authentic transaction lines into customer-level Recency, Frequency and Monetary (RFM) features, compares two representations, and fits reproducible K-Means models. A React application makes the computed groups, diagnostics and saved-model predictions inspectable.')
+    p('There are no ground-truth shopping-personality labels. Here, personality denotes a descriptive purchase profile within a historical observation window. It does not describe psychology, infer intent, or prove loyalty or future churn. Suggested retail strategies are illustrative and have not been experimentally validated.')
+    head('Research question')
+    p('How does log transformation of RFM change K-Means geometry, cluster balance and the interpretability of customer groups relative to standard scaling of raw RFM?')
+    p('The contribution is an integrated, audited teaching implementation and a controlled representation comparison. RFM and K-Means are established techniques; no new clustering algorithm is claimed.','Small')
+    page()
+    section('2. Literature')
+    head('RFM customer segmentation')
+    p('Chen, Sain and Guo [1] study customer segmentation using RFM and data mining in online retail. This provides a domain precedent for transaction summaries in customer analysis. ShopSense uses this compact feature family, but does not reproduce the paper\'s full experimental design or claim its business outcomes.')
+    head('K-Means clustering')
+    p('MacQueen [2] presents methods for classification and analysis of multivariate observations, including K-Means. ShopSense uses the modern scikit-learn batch implementation with k-means++ initialization. Alternating assignments and centroid updates minimizes within-cluster squared Euclidean distances. Local solutions depend on initialization and feature geometry.')
+    head('Silhouette analysis')
+    p('Rousseeuw [3] introduces silhouettes for interpreting and validating cluster analysis. Let a be the mean distance to other members of a customer\'s own group, and b the lowest mean distance to another group. The silhouette is (b - a) / max(a, b). Values near one suggest separation; values near zero suggest overlap; negative values suggest a closer alternative group.')
+    head('Implications for ShopSense')
+    p('RFM supplies interpretable measurements; K-Means gives a simple partition; silhouettes complement inertia and group-size checks. Internal metrics describe the selected feature space. They cannot establish a true number of personality types or replace external validation.')
+    head('Verified references')
+    p('[1] Chen, D., Sain, S. L., and Guo, K. (2012). Data mining for the online retail industry: A case study of RFM model-based customer segmentation using data mining. Journal of Database Marketing &amp; Customer Strategy Management, 19, 197-208. DOI: 10.1057/dbm.2012.17.','Small')
+    p('[2] MacQueen, J. (1967). Some methods for classification and analysis of multivariate observations. Proceedings of the Fifth Berkeley Symposium on Mathematical Statistics and Probability, Vol. 1, 281-297. University of California Press. UC Berkeley Library digital collection, record 113015.','Small')
+    p('[3] Rousseeuw, P. J. (1987). Silhouettes: A graphical aid to the interpretation and validation of cluster analysis. Journal of Computational and Applied Mathematics, 20, 53-65. DOI: 10.1016/0377-0427(87)90125-7.','Small')
+    p('[4] Chen, D. (2015). Online Retail [Dataset]. UCI Machine Learning Repository. DOI: 10.24432/C5BW33. Dataset 352, CC BY 4.0.','Small')
+    page()
+    section('3. Problem Statement / Objectives')
+    p('A transaction line is not a customer, and an invoice can contain many lines. Clustering raw lines would overweight large baskets and answer the wrong question. ShopSense discovers groups of identified customers from their completed positive-value purchases over a fixed dataset window.')
+    head('Research objectives')
+    for text in ['1. Audit excluded lines and reconcile counts from workbook to customer profiles.','2. Compute recency against a fixed timestamp, frequency from distinct invoices and monetary spending in GBP.','3. Compare scaled raw RFM with log1p plus scaling for K=2 through K=8 using identical training settings.','4. Report silhouette, Davies-Bouldin, Calinski-Harabasz, inertia, sizes and mean/median RFM without invented accuracy labels.','5. Choose a useful descriptive granularity and derive names from medians rather than arbitrary cluster IDs.','6. Serve typed results and saved-pipeline inference through FastAPI, with an interactive frontend and reproducible report.']: p(text)
+    head('Scope and evaluation boundary')
+    p('The study covers customers with an identifier and at least one valid purchase. Anonymous transactions, cancellations and non-positive sales are excluded. Monetary value is positive recorded purchase spending, not net revenue after returns, profit margin, or complete customer lifetime value.')
+    p('Profiles use the full historical window. There is no supervised train/test split because target labels are absent; scores are internal fit-set diagnostics. Future predictive evaluation would need a temporal split, features from an earlier window and independently observed subsequent behavior.')
+    head('Success criteria')
+    p('The submission requires reconciled counts, correct customer aggregation, repeatable artifacts, honest interpretation, validated API input, working charts and prediction, and report tables generated from the same artifacts as the application.')
+    page()
+    section('4. Methodology / Implementation')
+    head('Dataset and sequential cleaning')
+    p(f'The UCI Online Retail workbook [4] contains {a["raw_rows"]:,} lines and eight original columns, covering 1 December 2010 to 9 December 2011. UCI describes a UK non-store gift retailer with many wholesale customers. CustomerID is an identifier, never a clustering feature.')
+    table([['Stage','Excluded','Remaining'],['Original workbook','-',f'{a["raw_rows"]:,}'],*[[s['name'],f'{s["excluded"]:,}',f'{s["remaining"]:,}'] for s in a['steps']]],[295,90,90])
+    p(f'Retention is {a["retention_rate_pct"]}%. Exact duplicates are compared across all original columns, including Country. Their origin is unknown; some identical purchases could be legitimate. InvoiceDate is parsed as a timestamp. Line revenue is Quantity x UnitPrice, rounded to two decimal places before aggregation.')
+    head('Customer-level RFM')
+    p(f'Reference timestamp: <b>{a["reference_date"]}</b>, one day after the latest retained purchase. Recency counts elapsed 24-hour days since the last purchase, not days from today. Frequency counts distinct InvoiceNo values per customer. Monetary sums valid line revenue per customer in GBP.')
+    table([['Feature','Observed minimum','Observed maximum'],*[[key,f'{v["min"]:,.2f}',f'{v["max"]:,.2f}'] for key,v in m['training_ranges'].items()]],[195,140,140])
+    head('Compact methodology diagram')
+    table([['Input','Processing','Output'],['UCI workbook','Cleaning -> customer RFM','Audit + features'],['RFM features','Raw/log1p -> StandardScaler','Comparable coordinates'],['Scaled features','K-Means -> evaluation','Profiles + fitted pipeline'],['Fitted features','PCA projection','Customer map']],[125,210,140])
+    page()
+    p('Methodology / Implementation - continued','Sub')
+    head('Controlled experiment and K selection')
+    p(f'Experiment A scales raw RFM. Experiment B applies log1p to each feature before scaling. This compresses large values without discarding high spenders. StandardScaler estimates means and variances once during training. Every K from 2 to 8 uses random_state={m["random_seed"]}, n_init={m["n_init"]}, k-means++ initialization and Lloyd updates. Training uses one numerical thread to limit runtime variation.')
+    p(m['selection_reason'])
+    p('The log representation is selected for balanced, interpretable groups of typical shoppers. A high raw-space silhouette is not mathematically invalid: it may reflect separation of extreme buyers. Scores in different geometries cannot directly prove an accuracy improvement. Stability across seeds or time has not been established.')
+    head('Evaluation and visual interpretation')
+    p(f'Silhouette uses all {m["silhouette_sample_size"]:,} customers with Euclidean distance, without sampling. Davies-Bouldin measures within-group scatter relative to centroid separation (lower is preferred). Calinski-Harabasz compares between-group to within-group dispersion (higher is preferred). Inertia generally decreases as K grows. These are internal in-sample diagnostics.')
+    p(f'PCA is fitted to standardized log features only for display. Two components retain {m["pca_total_variance_pct"]}% of variance. K-Means uses all three dimensions, so overlapping projected points need not have identical model distances. High retained variance does not guarantee preservation of every pairwise distance.')
+    head('Implementation architecture and inference')
+    p('Python scripts separate acquisition, cleaning, training and evaluation. Training saves a fitted log1p -> StandardScaler -> K-Means pipeline, PCA, JSON profiles/metrics and customer coordinates. FastAPI loads paths relative to source files and does not retrain on API calls. Pydantic requires finite numeric inputs and positive frequency/spending. Recorded training bounds generate extrapolation warnings.')
+    p('React/TypeScript fetches overview, segments, evaluation and PCA data, highlights groups and submits RFM to the predictor. Loading or unavailable states never substitute constant analytics. Cluster names compare observed medians with population medians; marketing interpretations are hypotheses.')
+    p(f'Reproducibility: scikit-learn {m["sklearn_version"]}; direct package versions in requirements-lock.txt. A workbook SHA-256 is recorded in preprocessing_audit.json. Regenerate model artifacts after library upgrades.','Small')
+    page()
+    section('5. Results')
+    p(f'The cleaned data yields <b>{a["unique_customers"]:,} customers</b>, <b>{a["total_orders"]:,} distinct invoices</b> and <b>GBP {a["total_revenue_gbp"]:,.2f}</b> in recorded positive spending. Selected K={m["selected_k"]}: silhouette <b>{m["silhouette_score"]}</b>, Davies-Bouldin <b>{m["davies_bouldin_index"]}</b>, Calinski-Harabasz <b>{m["calinski_harabasz_score"]}</b>, inertia <b>{m["inertia"]}</b>.')
+    table([['Group (ID)','Customers / %','Median R / F','Median GBP'],*[[f'{s["name"]} ({s["cluster_id"]})',f'{s["count"]:,} / {s["percentage"]}%',f'{s["Recency_median"]:g}d / {s["Frequency_median"]:g}',f'{s["Monetary_median"]:,.2f}'] for s in profiles]],[195,100,85,95])
+    figure('cluster_distribution.png','Figure 1. Selected-model distribution; every customer is assigned once.')
+    p('The four descriptions distinguish recent repeated high spenders, less recent historically valuable buyers, recent modest-spending regulars and infrequent inactive shoppers. These do not prove future churn or loyalty. Moderate silhouette values indicate overlapping purchase patterns rather than sharply separated natural personality types.')
+    head('Raw versus transformed RFM at the same K')
+    rows=[['Features','Silhouette','DB index','CH score','Smallest %']]
+    for key in ['experiment_a_raw','experiment_b_log']:
+        r=next(r for r in exp[key]['results'] if r['k']==m['selected_k']);rows.append(['Raw' if key=='experiment_a_raw' else 'Log1p',r['silhouette'],r['davies_bouldin'],r['calinski_harabasz'],r['min_cluster_pct']])
+    table(rows,[115,90,85,95,90])
+    p('Log transformation trades outlier separation in raw space for a more even partition. It supports a descriptive choice, not superior predictive accuracy.','Small')
+    page()
+    p('Results - selection, visualization and limitations','Sub')
+    images=[Image(str(ROOT/'reports/figures'/n),width=235,height=151) for n in ['elbow_curve.png','silhouette_scores.png']]
+    story.append(Table([images],colWidths=[238,238]))
+    p('Figure 2. Inertia and silhouette for K=2..8. The elbow is gradual; K=2 has the highest log silhouette and K=4 adds descriptive detail.','Small')
+    figure('pca_clusters.png',f'Figure 3. All {m["n_customers"]:,} customers projected into two dimensions ({m["pca_total_variance_pct"]}% variance retained). Model assignments use three dimensions.',375)
+    head('Limitations and future improvements')
+    p('The data represents one retailer in 2010-2011, not present-day generality. Missing identifiers exclude many lines. Removing returns means spending is not net revenue. RFM omits product mix, seasonality and changes within the window. K-Means favors roughly spherical groups and responds to extremes. Small silhouette differences do not establish meaningful superiority for K=4.','Small')
+    p('Future work should compare temporal windows, assess stability across seeds and resamples, compare clustering algorithms and test independent future outcomes. Marketing interventions need separate evaluation. This is a reproducible case study, not validated psychological categories or a production decision system.','Small')
+    def decorate(c,doc):
+        c.saveState();c.setFont('Helvetica',8);c.setFillColor(colors.HexColor('#657064'));c.drawString(54,810,'SHOPSENSE / AI CASE STUDY');c.drawRightString(541,810,'VIT Vellore');c.setStrokeColor(colors.HexColor('#deddd5'));c.line(54,798,541,798);c.drawString(54,32,'Historical purchase behavior | UCI Online Retail');c.drawRightString(541,32,str(doc.page));c.restoreState()
+    SimpleDocTemplate(str(OUTPUT),pagesize=A4,leftMargin=60,rightMargin=60,topMargin=61,bottomMargin=52,title='ShopSense AI Case Study',author=student['student_name']).build(story,onFirstPage=decorate,onLaterPages=decorate)
+    print(f'Generated {OUTPUT}')
+if __name__=='__main__': create_report()

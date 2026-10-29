@@ -1,0 +1,44 @@
+{
+  "raw_rows": 541909,
+  "steps": [
+    {
+      "step": 1,
+      "name": "Missing CustomerID removal",
+      "excluded": 135080,
+      "remaining": 406829,
+      "description": "Records without an identified customer cannot be attributed to a customer profile."
+    },
+    {
+      "step": 2,
+      "name": "Cancelled transactions removal",
+      "excluded": 8905,
+      "remaining": 397924,
+      "description": "Cancelled orders (invoices prefixed with 'C') represent reversals and returns."
+    },
+    {
+      "step": 3,
+      "name": "Non-positive Quantity or UnitPrice removal",
+      "excluded": 40,
+      "remaining": 397884,
+      "description": "Non-positive price or quantity is excluded; the reason for these entries is not inferred."
+    },
+    {
+      "step": 4,
+      "name": "Exact duplicate records removal",
+      "excluded": 5192,
+      "remaining": 392692,
+      "description": "Identical rows across all original columns are removed; their origin is unknown."
+    }
+  ],
+  "source": "https://archive.ics.uci.edu/dataset/352/online+retail",
+  "source_sha256": "43465a06f2ccf7c8b5bd2892bc7defb52f97487934fe93b16ae4c3936424676d",
+  "total_clean_rows": 392692,
+  "total_excluded_rows": 149217,
+  "retention_rate_pct": 72.46,
+  "min_date": "2010-12-01 08:26:00",
+  "max_date": "2011-12-09 12:50:00",
+  "total_revenue_gbp": 8887208.89,
+  "total_orders": 18532,
+  "reference_date": "2011-12-10 12:50:00",
+  "unique_customers": 4338
+}

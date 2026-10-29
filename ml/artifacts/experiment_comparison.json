@@ -1,0 +1,226 @@
+{
+  "experiment_a_raw": {
+    "name": "Experiment A: Raw RFM with Standard Scaling",
+    "description": "StandardScaler applied directly to raw RFM values without log transformation.",
+    "results": [
+      {
+        "k": 2,
+        "inertia": 9014.57,
+        "silhouette": 0.8958,
+        "davies_bouldin": 0.745,
+        "calinski_harabasz": 1923.72,
+        "cluster_sizes": [
+          4312,
+          26
+        ],
+        "min_cluster_pct": 0.6
+      },
+      {
+        "k": 3,
+        "inertia": 5441.32,
+        "silhouette": 0.5942,
+        "davies_bouldin": 0.7104,
+        "calinski_harabasz": 3016.5,
+        "cluster_sizes": [
+          1082,
+          3230,
+          26
+        ],
+        "min_cluster_pct": 0.6
+      },
+      {
+        "k": 4,
+        "inertia": 4096.3,
+        "silhouette": 0.6162,
+        "davies_bouldin": 0.7542,
+        "calinski_harabasz": 3145.06,
+        "cluster_sizes": [
+          3054,
+          1067,
+          13,
+          204
+        ],
+        "min_cluster_pct": 0.3
+      },
+      {
+        "k": 5,
+        "inertia": 3119.79,
+        "silhouette": 0.6165,
+        "davies_bouldin": 0.716,
+        "calinski_harabasz": 3435.46,
+        "cluster_sizes": [
+          3048,
+          1063,
+          8,
+          213,
+          6
+        ],
+        "min_cluster_pct": 0.14
+      },
+      {
+        "k": 6,
+        "inertia": 2473.79,
+        "silhouette": 0.5983,
+        "davies_bouldin": 0.6273,
+        "calinski_harabasz": 3691.52,
+        "cluster_sizes": [
+          2930,
+          1059,
+          2,
+          322,
+          4,
+          21
+        ],
+        "min_cluster_pct": 0.05
+      },
+      {
+        "k": 7,
+        "inertia": 2023.56,
+        "silhouette": 0.5189,
+        "davies_bouldin": 0.6333,
+        "calinski_harabasz": 3920.46,
+        "cluster_sizes": [
+          316,
+          617,
+          2601,
+          21,
+          777,
+          4,
+          2
+        ],
+        "min_cluster_pct": 0.05
+      },
+      {
+        "k": 8,
+        "inertia": 1715.98,
+        "silhouette": 0.4769,
+        "davies_bouldin": 0.6955,
+        "calinski_harabasz": 4072.69,
+        "cluster_sizes": [
+          749,
+          664,
+          21,
+          603,
+          4,
+          2165,
+          2,
+          130
+        ],
+        "min_cluster_pct": 0.05
+      }
+    ],
+    "finding": "Raw scaling gives high silhouette values but concentrates small groups of extreme buyers. These groups may be valid outliers, but offer limited detail for typical customers."
+  },
+  "experiment_b_log": {
+    "name": "Experiment B: Log-Transformed RFM with Standard Scaling",
+    "description": "log1p applied to RFM features prior to StandardScaler, handling heavy right-tailed skewness.",
+    "results": [
+      {
+        "k": 2,
+        "inertia": 6483.59,
+        "silhouette": 0.4328,
+        "davies_bouldin": 0.8925,
+        "calinski_harabasz": 4367.32,
+        "cluster_sizes": [
+          2672,
+          1666
+        ],
+        "min_cluster_pct": 38.4
+      },
+      {
+        "k": 3,
+        "inertia": 4869.49,
+        "silhouette": 0.3365,
+        "davies_bouldin": 1.0483,
+        "calinski_harabasz": 3625.3,
+        "cluster_sizes": [
+          769,
+          1872,
+          1697
+        ],
+        "min_cluster_pct": 17.73
+      },
+      {
+        "k": 4,
+        "inertia": 3938.6,
+        "silhouette": 0.3373,
+        "davies_bouldin": 1.0106,
+        "calinski_harabasz": 3328.92,
+        "cluster_sizes": [
+          1617,
+          1173,
+          839,
+          709
+        ],
+        "min_cluster_pct": 16.34
+      },
+      {
+        "k": 5,
+        "inertia": 3296.71,
+        "silhouette": 0.3162,
+        "davies_bouldin": 0.9878,
+        "calinski_harabasz": 3192.98,
+        "cluster_sizes": [
+          834,
+          938,
+          1209,
+          1018,
+          339
+        ],
+        "min_cluster_pct": 7.81
+      },
+      {
+        "k": 6,
+        "inertia": 2855.53,
+        "silhouette": 0.3128,
+        "davies_bouldin": 1.0156,
+        "calinski_harabasz": 3082.28,
+        "cluster_sizes": [
+          962,
+          811,
+          590,
+          333,
+          953,
+          689
+        ],
+        "min_cluster_pct": 7.68
+      },
+      {
+        "k": 7,
+        "inertia": 2548.82,
+        "silhouette": 0.3092,
+        "davies_bouldin": 0.9823,
+        "calinski_harabasz": 2963.79,
+        "cluster_sizes": [
+          891,
+          647,
+          687,
+          227,
+          620,
+          403,
+          863
+        ],
+        "min_cluster_pct": 5.23
+      },
+      {
+        "k": 8,
+        "inertia": 2336.34,
+        "silhouette": 0.3033,
+        "davies_bouldin": 0.9892,
+        "calinski_harabasz": 2827.07,
+        "cluster_sizes": [
+          856,
+          410,
+          214,
+          755,
+          503,
+          292,
+          635,
+          673
+        ],
+        "min_cluster_pct": 4.93
+      }
+    ],
+    "finding": "Log scaling compresses large values and produces more balanced descriptive groups. This is a change of geometry, not proof of higher accuracy or temporal stability."
+  }
+}

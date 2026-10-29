@@ -1,0 +1,149 @@
+{
+  "random_seed": 42,
+  "n_init": 20,
+  "silhouette_sample_size": 4338,
+  "sklearn_version": "1.8.0",
+  "selection_reason": "K=4 is a descriptive granularity choice after inspecting K=2..8. K=2 has the highest log-space silhouette; four clusters retain useful RFM detail with balanced groups. The elbow is gradual, and no uniquely optimal K is claimed.",
+  "training_ranges": {
+    "Recency": {
+      "min": 1.0,
+      "max": 374.0
+    },
+    "Frequency": {
+      "min": 1.0,
+      "max": 209.0
+    },
+    "Monetary": {
+      "min": 3.75,
+      "max": 280206.02
+    }
+  },
+  "selected_k": 4,
+  "n_customers": 4338,
+  "silhouette_score": 0.3373,
+  "davies_bouldin_index": 1.0106,
+  "calinski_harabasz_score": 3328.92,
+  "inertia": 3938.6,
+  "pca_explained_variance_ratio": [
+    0.7508,
+    0.1879
+  ],
+  "pca_total_variance_pct": 93.87,
+  "population_medians": {
+    "Recency": 51.0,
+    "Frequency": 2.0,
+    "Monetary": 668.57
+  },
+  "population_means": {
+    "Recency": 92.54,
+    "Frequency": 4.27,
+    "Monetary": 2048.69
+  },
+  "candidate_k_evaluation": [
+    {
+      "k": 2,
+      "inertia": 6483.59,
+      "silhouette": 0.4328,
+      "davies_bouldin": 0.8925,
+      "calinski_harabasz": 4367.32,
+      "cluster_sizes": [
+        2672,
+        1666
+      ],
+      "min_cluster_pct": 38.4
+    },
+    {
+      "k": 3,
+      "inertia": 4869.49,
+      "silhouette": 0.3365,
+      "davies_bouldin": 1.0483,
+      "calinski_harabasz": 3625.3,
+      "cluster_sizes": [
+        769,
+        1872,
+        1697
+      ],
+      "min_cluster_pct": 17.73
+    },
+    {
+      "k": 4,
+      "inertia": 3938.6,
+      "silhouette": 0.3373,
+      "davies_bouldin": 1.0106,
+      "calinski_harabasz": 3328.92,
+      "cluster_sizes": [
+        1617,
+        1173,
+        839,
+        709
+      ],
+      "min_cluster_pct": 16.34
+    },
+    {
+      "k": 5,
+      "inertia": 3296.71,
+      "silhouette": 0.3162,
+      "davies_bouldin": 0.9878,
+      "calinski_harabasz": 3192.98,
+      "cluster_sizes": [
+        834,
+        938,
+        1209,
+        1018,
+        339
+      ],
+      "min_cluster_pct": 7.81
+    },
+    {
+      "k": 6,
+      "inertia": 2855.53,
+      "silhouette": 0.3128,
+      "davies_bouldin": 1.0156,
+      "calinski_harabasz": 3082.28,
+      "cluster_sizes": [
+        962,
+        811,
+        590,
+        333,
+        953,
+        689
+      ],
+      "min_cluster_pct": 7.68
+    },
+    {
+      "k": 7,
+      "inertia": 2548.82,
+      "silhouette": 0.3092,
+      "davies_bouldin": 0.9823,
+      "calinski_harabasz": 2963.79,
+      "cluster_sizes": [
+        891,
+        647,
+        687,
+        227,
+        620,
+        403,
+        863
+      ],
+      "min_cluster_pct": 5.23
+    },
+    {
+      "k": 8,
+      "inertia": 2336.34,
+      "silhouette": 0.3033,
+      "davies_bouldin": 0.9892,
+      "calinski_harabasz": 2827.07,
+      "cluster_sizes": [
+        856,
+        410,
+        214,
+        755,
+        503,
+        292,
+        635,
+        673
+      ],
+      "min_cluster_pct": 4.93
+    }
+  ]
+}

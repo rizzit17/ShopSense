@@ -1,0 +1,102 @@
+[
+  {
+    "cluster_id": 3,
+    "count": 709,
+    "percentage": 16.34,
+    "Recency_median": 8.0,
+    "Recency_mean": 12.08,
+    "Frequency_median": 10.0,
+    "Frequency_mean": 13.79,
+    "Monetary_median": 3722.82,
+    "Monetary_mean": 8112.93,
+    "name": "High-Value Champions",
+    "badge": "Tier 1: High Value",
+    "color": "#2E5A44",
+    "description": "Customers who shop frequently, purchased recently, and generate higher recorded spending than the population median.",
+    "characteristics": [
+      "Median spending of \u00a33,722.82 (5.6x population median)",
+      "High purchase frequency of 10 orders (population median: 2)",
+      "Strong recency (8 days since last transaction)"
+    ],
+    "business_insight": "Prioritize VIP loyalty recognition, early product previews, and premium customer service to maintain high retention.",
+    "r_diff": "Recent",
+    "f_diff": "High Frequency",
+    "m_diff": "High Spend",
+    "display_rank": 1
+  },
+  {
+    "cluster_id": 1,
+    "count": 1173,
+    "percentage": 27.04,
+    "Recency_median": 55.0,
+    "Recency_mean": 70.13,
+    "Frequency_median": 4.0,
+    "Frequency_mean": 4.11,
+    "Monetary_median": 1341.65,
+    "Monetary_mean": 1804.82,
+    "name": "At-Risk Valuable Shoppers",
+    "badge": "Tier 4: Retention Focus",
+    "color": "#8A6D3B",
+    "description": "Shoppers who previously generated notable revenue or orders but haven't made a purchase in a prolonged period.",
+    "characteristics": [
+      "High recency gap (55 days inactive)",
+      "Historical spending of \u00a31,341.65",
+      "Demonstrated willingness to place multiple orders (4 orders)"
+    ],
+    "business_insight": "Win-back email campaigns with personalized incentives could reactivate interest before permanent attrition occurs.",
+    "r_diff": "Dormant",
+    "f_diff": "High Frequency",
+    "m_diff": "High Spend",
+    "display_rank": 2
+  },
+  {
+    "cluster_id": 2,
+    "count": 839,
+    "percentage": 19.34,
+    "Recency_median": 17.0,
+    "Recency_mean": 18.21,
+    "Frequency_median": 2.0,
+    "Frequency_mean": 2.14,
+    "Monetary_median": 466.7,
+    "Monetary_mean": 543.06,
+    "name": "Active Regular Shoppers",
+    "badge": "Tier 2: High Engagement",
+    "color": "#5A7D6B",
+    "description": "Engaged, regular shoppers who order consistently but maintain moderate order values per transaction.",
+    "characteristics": [
+      "Purchased recently (17 days ago)",
+      "Steady order cadence of 2 orders",
+      "Moderate recorded spend (\u00a3466.70)"
+    ],
+    "business_insight": "Cross-selling related basket items or offering volume discounts may encourage higher average order values.",
+    "r_diff": "Recent",
+    "f_diff": "High Frequency",
+    "m_diff": "Modest Spend",
+    "display_rank": 3
+  },
+  {
+    "cluster_id": 0,
+    "count": 1617,
+    "percentage": 37.28,
+    "Recency_median": 177.0,
+    "Recency_mean": 182.63,
+    "Frequency_median": 1.0,
+    "Frequency_mean": 1.32,
+    "Monetary_median": 298.4,
+    "Monetary_mean": 347.85,
+    "name": "Dormant Low-Engagement Shoppers",
+    "badge": "Tier 5: Low Engagement",
+    "color": "#7A8288",
+    "description": "Infrequent shoppers with long periods of inactivity and low cumulative monetary spend.",
+    "characteristics": [
+      "Protracted inactivity (177 days since last order)",
+      "Single or very few purchases (1 orders)",
+      "Low recorded expenditure (\u00a3298.40)"
+    ],
+    "business_insight": "Evaluate cost-effective automated re-engagement or reserve marketing budget for higher-converting segments.",
+    "r_diff": "Dormant",
+    "f_diff": "Low Frequency",
+    "m_diff": "Modest Spend",
+    "display_rank": 4
+  }
+]

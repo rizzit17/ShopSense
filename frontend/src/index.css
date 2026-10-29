@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 85px; }
+  body { margin: 0; background: #F7F6F2; color: #252925; font-family: 'DM Sans', 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; }
+  h1, h2, .font-editorial { font-family: 'Newsreader', Georgia, serif; }
+  button, a, input { -webkit-tap-highlight-color: transparent; }
+  button { cursor: pointer; }
+  button:disabled { cursor: wait; opacity: .6; }
+  :focus-visible { outline: 2px solid #607866; outline-offset: 4px; }
+  section { scroll-margin-top: 24px; }
+}
+.eyebrow { display:block; color:#4f6955; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.13em; margin-bottom:12px; }
+.section-intro { font-size:14px; line-height:1.7; color:#575e56; max-width:900px; }
+.chart-panel { background:white; border:1px solid #e3e2da; padding:20px; border-radius:4px; min-width:0; }
+.chart-panel h3 { font-size:14px; font-weight:600; margin-bottom:20px; }
+.data-table { width:100%; border-collapse:collapse; font-size:13px; text-align:left; white-space:nowrap; }
+.data-table th,.data-table td { padding:16px; border-bottom:1px solid #deddd5; }
+.data-table th { color:#4f6955; font-weight:600; }
+.skip-link { position:absolute; top:-100px; background:#252925; color:white; padding:10px; z-index:100; }
+.skip-link:focus { top:8px; }
+@media (max-width: 600px) { .chart-panel { padding:12px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation:none!important; transition:none!important; } }

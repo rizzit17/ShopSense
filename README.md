@@ -1,8 +1,8 @@
 # ShopSense
 
-Live application: [shopsense-jade.vercel.app](https://shopsense-jade.vercel.app). The frontend and FastAPI prediction service run together on Vercel under shreyah101-s-projects.
+Live application: [shopsense-jade.vercel.app](https://shopsense-jade.vercel.app).
 
-Discovering different shopping personalities using machine learning. An AI academic case study for VIT Vellore, built with Python, pandas, scikit-learn, FastAPI/Pydantic, React, TypeScript, Vite, Tailwind and Recharts. ReportLab generates the academic PDF.
+Discovering different shopping personalities using machine learning. An AI academic case study, built with Python, pandas, scikit-learn, FastAPI/Pydantic, React, TypeScript, Vite, Tailwind and Recharts. ReportLab generates the academic PDF.
 
 ShopSense converts transaction lines into customer RFM profiles, compares raw and log feature spaces, and exposes the results through an interactive analytics page. Personality names describe observed purchase behavior; they are not psychological assessments. This is an educational implementation, not a novel clustering algorithm or a production decision system.
 
